@@ -17,7 +17,7 @@ class User(UserMixin,db.Model):
 	Address = db.Column(db.String(540),nullable=True)
 	Gender = db.Column(gender_enum)
 	password_hash = db.Column(db.String(128))
-	posts = db.relationship('Blog', backref='author',cascade="all,delete",lazy='dynamic')
+	blogs = db.relationship('Blog', backref='author',cascade="all,delete",lazy='dynamic')
 
 	def __str__(self):
 		return '<USER %s>' %(self.username)
@@ -40,7 +40,7 @@ class User(UserMixin,db.Model):
 def load_user(user_id):
 	return User.query.get(int(user_id))
 
-class Blog:
+class Blog(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	title = db.Column(db.String(140),nullable=False)
 	content = db.Column(db.String(540))
@@ -49,4 +49,4 @@ class Blog:
 	user_id= db.Column(db.Integer,db.ForeignKey('user.id'))
 
 	def __str__(self):
-		return '<Post %s>' %(self.content)
+		return '<Blog %s>' %(self.content)
