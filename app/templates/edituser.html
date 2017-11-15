@@ -1,19 +1,28 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-
-	<h1>Register Users</h1>
 	
-	<form action="" method="post" name="register">
-		{{ form.hidden_tag() }}
+	<div class="container">
 		<div class="row">
-			<div class="form-group col-md-12">
+			
+			<div class="col-md-offset-4 col-md-4">
+				<h1>User Profile</h1>
+			</div>
+		</div><br>
+		<div class="row">
+			<div class="col-md-6">
+				<img src="{{ current_user.avatar(128) }}"
+			</div>
+			<div class="col-md-6">
+				<form action="" method="post" name="register">
+				{{ form.hidden_tag() }}
+				<div class="row">
+				<div class="form-group col-md-12">
 				{% for error in form.username.errors %}
 					<span style="color:red">{{ error }}</span><br>
 				{% endfor %}
             	<label for="title" class="control-label">Username</label><br>
-            	{{ form.username(class_='form-control') }}  
+            	{{ form.username }}  
         	</div>
     	</div>
     	<div class="row">
@@ -22,7 +31,7 @@
 					<span style="color:red">{{ error }}</span><br>
 				{% endfor %}
             	<label for="email" class="control-label">Email</label><br>
-            	{{ form.email(class_='form-control') }}  
+            	{{ form.email }}  
         	</div>
     	</div>
     	<div class="row">
@@ -31,7 +40,7 @@
 					<span style="color:red">{{ error }}</span><br>
 				{% endfor %}
             	<label for="password" class="control-label">Password</label><br>
-            	{{ form.password(class_='form-control') }}
+            	{{ form.password }}
             </div>  
         </div>
   		<div class="row">
@@ -40,11 +49,14 @@
 					<span style="color:red">{{ error }}</span><br>
 				{% endfor %}
             	<label for="confirm_password" class="control-label">Confirm Password</label><br>
-            	{{ form.confirm_password(class_='form-control') }}  
+            	{{ form.confirm_password }}  
         	</div>
     	</div>
-		<p>{{form.submit(class_='btn btn-primary')}}</p>
+		<p>{{form.submit}}</p>
 	</form>
-	
-</div>
+
+			</div>
+	</div>
+
+
 {% endblock %}

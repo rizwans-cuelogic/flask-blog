@@ -6,8 +6,7 @@ from flask_login import UserMixin
 from hashlib import md5
 from sqlalchemy import Enum
 
-gender = ('Male','M','Female','F')
-gender_enum =Enum(*gender,name='gender')
+
 
 class User(UserMixin,db.Model):
 	id = db.Column(db.Integer,primary_key=True)
@@ -15,7 +14,7 @@ class User(UserMixin,db.Model):
 	email = db.Column(db.String(120),index=True,unique=True)
 	contact = db.Column(db.String(12),nullable=True)
 	Address = db.Column(db.String(540),nullable=True)
-	Gender = db.Column(gender_enum)
+	Gender = db.Column(db.String(10),nullable=True)
 	password_hash = db.Column(db.String(128))
 	blogs = db.relationship('Blog', backref='author',cascade="all,delete",lazy='dynamic')
 
