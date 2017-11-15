@@ -16,7 +16,7 @@
 				<li><a href="{{ url_for('main.index') }}">Home</a></li>
       			<li><a href="{{ url_for('mod_user.profile',username=current_user.username)}}">Edit Profile</a></li>
       			<li><a href="{{ url_for('mod_blog.add_blog') }}">Add Blog</a></li>
-            <li><a href="#">List Blog</a></li>
+            <li><a href="{{ url_for('mod_blog.list_blog') }}">List Blog</a></li>
       			<li><a href="{{ url_for('mod_user.logout')}}">Logout</a></li>
 
         {% else %}
