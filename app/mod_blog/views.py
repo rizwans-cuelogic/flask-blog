@@ -34,11 +34,8 @@ def add_blog():
 @mod_blog.route('/listblog')
 @login_required
 def list_blog():
-	import pdb
-	pdb.set_trace()
-	
-	blogs = current_user.blogs
 
+	blogs = current_user.blogs
 	return render_template('listblog.html',blogs=blogs)
 
 @mod_blog.route('/deleteblog/<int:id>')
