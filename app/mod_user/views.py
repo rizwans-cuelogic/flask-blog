@@ -19,7 +19,7 @@ def register():
 		db.session.add(user)
 		db.session.commit()
 		flash("You have been registered successfully")
-		return render_template('login.html',form=loginform)
+		return redirect(url_for('.login'))
 
 	return render_template('register.html',form=registerform)
 
@@ -28,6 +28,7 @@ def login():
 	login_form=LoginForm()
 
 	if login_form.validate_on_submit():
+
 		user = User.query.filter_by(email=login_form.email.data).first()
 		if user is not None and user.verify_password(login_form.password.data):
 			session['remember_me']=login_form.remember_me.data
@@ -45,11 +46,11 @@ def logout():
 
 
 @mod_user.route('/profile/<username>',methods=['GET','POST'])
+@login_required
 def profile(username):
 	editform = EditForm()
 
 	if editform.validate_on_submit():
-		
 		user = User.query.filter_by(email=current_user.email).first()
 		user.username=editform.username.data
 		user.email = editform.email.data

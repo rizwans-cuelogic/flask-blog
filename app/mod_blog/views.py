@@ -34,10 +34,8 @@ def add_blog():
 @mod_blog.route('/listblog')
 @login_required
 def list_blog():
-	import pdb
-	pdb.set_trace()
 	
-	blogs = current_user.blogs
+	blogs = current_user.blogs.all()
 
 	return render_template('listblog.html',blogs=blogs)
 
@@ -48,5 +46,27 @@ def delete_blog(id):
 	if blog:
 		db.session.delete(blog)
 		db.session.commit()
+		flash('blog deleted successfully')
 		return redirect(url_for('.list_blog'))
 
+@mod_blog.route('/editblog/<int:id>',methods=['GET','POST'])
+@login_required
+def edit_blog(id):
+	blog= Blog.query.filter_by(id=id).first()
+	blogform =BlogForm()
+	if blogform.validate_on_submit():
+		blog= Blog.query.filter_by(id=id).first()
+		blog.title = blogform.title.data
+		blog.content = blogform.content.data
+		blog.publication_date = blogform.publication_date.data
+		db.session.commit()
+		flash('Blog Updated Suceesfully')
+		return redirect(url_for('.list_blog'))
+
+	else:			
+		blogform.title.data=blog.title
+		blogform.content.data = blog.content
+		blogform.publication_date.data = blog.publication_date
+	
+	return render_template('editblog.html',form=blogform)
+	

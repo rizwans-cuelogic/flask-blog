@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
-
+{% block head %}
+  <style>
+  .color-style{ 
+    color:#777;   
+   }
+  </style>
+{% endblock %}
 {% block content %}
 
-	<div class="container">
+<div class="container">
+  {% for message in get_flashed_messages() %}
+      <p class="text-center color-style">{{ message }}</p>
+  {% endfor %}
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
       		<div class="modal-header">
-        		<h4 class="modal-title">Login</h4>
+        		<h1 class="modal-title color-style">Login</h1>
      		 </div>
       		<div class="modal-body">
         	<form action="" method="post" name="login">
@@ -25,7 +34,7 @@
 		    	<div class="checkbox">
 		      		<label>{{ form.remember_me }} Remember me</label>
 		    	</div>
-    			{{ form.submit(class_='btn btn-primary')}}
+    			{{ form.submit(class_='btn btn-success form-control')}}
 			</form>
       		</div>
     	</div>

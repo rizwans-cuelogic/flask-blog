@@ -5,7 +5,7 @@
 		<div class="col-md-offset-4 col-md-4">
 	{% if blogs %}	
 		{% for blog in blogs %}
-		<h1 style="display:inline;">{{ blog.title }}</h1> <a class="btn btn-danger" href="{{ url_for('mod_blog.delete_blog',id=blog.id) }}">Delete</a><a class="btn btn-primary href="#">Edit</a>
+		<h1 style="display:inline;">{{ blog.title }}</h1> <a class="btn btn-danger" href="{{ url_for('mod_blog.delete_blog',id=blog.id) }}">Delete</a><a class="btn btn-primary" href="{{ url_for('mod_blog.edit_blog',id=blog.id) }}">Edit</a>
 		{% endfor %}
 	{% else %}
 		<h1>you dont have any blog</h1>

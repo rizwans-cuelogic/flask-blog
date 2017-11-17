@@ -2,9 +2,12 @@
 
 {% block content %}
 <div class="container">
-
-	<h1>Register Users</h1>
-	
+	<div class="modal-dialog modal-sm">
+	<div class="modal-content">
+      		<div class="modal-header">
+        		<h1 class="modal-title color-style">Register</h1>
+     		</div>
+    <div class="modal-body">
 	<form action="" method="post" name="register">
 		{{ form.hidden_tag() }}
 		<div class="row">
@@ -43,8 +46,10 @@
             	{{ form.confirm_password(class_='form-control') }}  
         	</div>
     	</div>
-		<p>{{form.submit(class_='btn btn-primary')}}</p>
+		<p>{{form.submit(class_='btn btn-success form-control')}}</p>
 	</form>
-	
+	</div>
+	</div>
+	</div>
 </div>
 {% endblock %}
