@@ -39,6 +39,9 @@
       .color-style{ 
         color:#777;   
       }
+      .margin-tp{
+        margin-top:20px;
+      }
   </style>
 
     </style>
@@ -62,6 +65,7 @@
         <li><a href="{{ url_for('mod_user.profile',username=current_user.username)}}">Edit Profile</a></li>
         <li><a href="{{ url_for('mod_blog.add_blog') }}">Add Blog</a></li>
         <li><a href="{{ url_for('mod_blog.list_blog') }}">List Blog</a></li>
+        <li><a href="{{ url_for('mod_blog.all_blog') }}">All Blogs</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="{{ url_for('mod_user.logout')}}">Logout</a></li>

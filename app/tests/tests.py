@@ -11,6 +11,8 @@ from ..mod_blog.forms import BlogForm
 class TestCase(unittest.TestCase):
 
 	def setUp(self):
+		import pdb
+		pdb.set_trace()
 		app.config['TESTING'] = True
 		app.config['WTF_CSRF_ENABLED'] = False
 		app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
@@ -288,6 +290,65 @@ class TestCase(unittest.TestCase):
 
 		assert "you dont have any blog" in rv.data
 
- 		
+	def test_edit_blog(self):
+		user= self.create_user()
+		db.session.add(user)
+		db.session.commit()
+		email="test@test.com"
+		password="As123456"
+		rv = self.app.post('/login', data=dict(
+				email=email,
+				password=password
+			), follow_redirects=True)
+		blog =Blog(title="this is test",content="this test content",author=user)
+		db.session.add(blog)
+		db.session.commit()
+		rv = self.app.post(url_for('mod_blog.edit_blog',
+									id=int(blog.id)),
+							data=dict(
+								title="editing blog",
+								content="thid edited content"
+								),
+							follow_redirects=True)
+		assert "Blog Updated Successfully" in rv.data
+
+	def test_blog_detail(self):
+		user= self.create_user()
+		db.session.add(user)
+		db.session.commit()
+		email="test@test.com"
+		password="As123456"
+		rv = self.app.post('/login', data=dict(
+				email=email,
+				password=password
+			), follow_redirects=True)
+		blog =Blog(title="this is test",content="this test content",author=user)
+		db.session.add(blog)
+		db.session.commit()
+		rv = self.app.get(url_for('mod_blog.detail_blog',
+									id=int(blog.id)),
+									follow_redirects=True
+							)	
+ 		assert "this test content" in rv.data
+
+ 	def test_all_blog(self):
+ 		user= self.create_user()
+		db.session.add(user)
+		db.session.commit()
+		email="test@test.com"
+		password="As123456"
+		rv = self.app.post('/login', data=dict(
+				email=email,
+				password=password
+			), follow_redirects=True)
+		blog =Blog(title="this is test",content="this test content",author=user)
+		db.session.add(blog)
+		db.session.commit()
+		rv = self.app.get('/allblog',follow_redirects=True)
+		assert "this is test" in rv.data
+
+
+
+
 if __name__ == '__main__':
 	unittest.main()

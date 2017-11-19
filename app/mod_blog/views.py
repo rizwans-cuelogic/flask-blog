@@ -46,7 +46,7 @@ def delete_blog(id):
 	if blog:
 		db.session.delete(blog)
 		db.session.commit()
-		flash('blog deleted successfully')
+		flash('Blog Deleted Successfully')
 		return redirect(url_for('.list_blog'))
 
 @mod_blog.route('/editblog/<int:id>',methods=['GET','POST'])
@@ -60,7 +60,7 @@ def edit_blog(id):
 		blog.content = blogform.content.data
 		blog.publication_date = blogform.publication_date.data
 		db.session.commit()
-		flash('Blog Updated Suceesfully')
+		flash('Blog Updated Successfully')
 		return redirect(url_for('.list_blog'))
 
 	else:			
@@ -70,3 +70,15 @@ def edit_blog(id):
 	
 	return render_template('editblog.html',form=blogform)
 	
+@mod_blog.route('/detailblog/<int:id>',methods=['GET'])
+@login_required
+def detail_blog(id):
+	blog= Blog.query.filter_by(id=id).first()
+	if blog:
+		return render_template('detailblog.html',blog=blog)	
+
+@mod_blog.route('/allblog',methods=['GET'])
+@login_required
+def all_blog():
+	blogs = Blog.query.filter_by().order_by(Blog.id.desc())
+	return render_template('allblog.html',blogs=blogs)
