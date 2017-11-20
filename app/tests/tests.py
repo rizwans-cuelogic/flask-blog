@@ -11,8 +11,6 @@ from ..mod_blog.forms import BlogForm
 class TestCase(unittest.TestCase):
 
 	def setUp(self):
-		import pdb
-		pdb.set_trace()
 		app.config['TESTING'] = True
 		app.config['WTF_CSRF_ENABLED'] = False
 		app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
