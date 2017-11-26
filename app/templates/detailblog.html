@@ -33,7 +33,21 @@
 	main h3{
     	font-size: 21px;
 	}
+	.mr-l{
+		margin-left:50px;
+	}
+	.reply1 {
+		display:none;
+	}
+	.reply2 {
+		display:none;
+	}
 	</style>
+	<script type="text/javascript">
+		function toggler(divId) {
+    		$("." + divId).toggle();
+		}
+	</script>
 {% endblock %}
 {% block content %}
 	<div class="container">
@@ -48,6 +62,57 @@
 					</div>
 			</main>
 		</div>
+		<h1 class="lead">Comments</h1>
+		<form action="" method="post" name=commentform>
+				{{form.hidden_tag()}}
+			<div class="form-group">
+				{% for error in form.content.errors %}
+					<span style="color:red ">[{{ error }}]</span><br>
+				{% endfor %}
+				{{ form.content(class="form-control") }}
+			</div>
+				{{ form.submit }}			
+		</form>
+		{% for comment in comments %}
+			<blockquote class="blockquote">
+					<p class="mb-0">{{ comment.content }}</p>
+					<cite class="blockquote-footer"> by {{comment.commentator.username }}</cite>
+					<button class="btn btn-primary" onclick="toggler('reply2');">reply</button>
+					<div class = "reply2">
+						<form action="" method="post" name=commentform>
+						{{form.csrf_token()}}
+						<div class="form-group">
+						{% for error in form.content.errors %}
+							<span style="color:red ">[{{ error }}]</span><br>
+						{% endfor %}
+						{{ form.content(rows="1",class="form-control") }}
+						{{ form.parent_id(value = comment.id) }}
+						</div>
+						{{ form.submit }}			
+					</form>	
+					</div>
+			</blockquote>		
+					{% for replay in comment.replies %}
+							<blockquote class="blockquote mr-l">
+								<p class="mb-0">{{ replay.content }}</p>
+								<cite class="blockquote-footer"> by {{ replay.commentator.username }}</cite>
+								<button class="btn btn-primary" onclick="toggler('.reply2');">reply</button>
+								<div class = "reply2">
+									<form action="" method="post" name=commentform>
+									{{form.csrf_token()}}
+									<div class="form-group">
+									{% for error in form.content.errors %}
+										<span style="color:red ">[{{ error }}]</span><br>
+									{% endfor %}
+									{{ form.content(rows="1",class="form-control") }}
+									{{ form.parent_id(value = replay.id) }}
+									</div>
+									{{ form.submit }}			
+								</form>	
+							</div>
+							</blockquote>
+					{% endfor %}
+		{% endfor %}				
 	</div>	
 
 {% endblock %}
