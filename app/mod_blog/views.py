@@ -13,6 +13,7 @@ def add_blog():
 	blogform = BlogForm()
 
 	if blogform.validate_on_submit():
+		
 		if blogform.publication_date.data:
 			blog = Blog(title=blogform.title.data,
 						content=blogform.content.data,
@@ -101,5 +102,5 @@ def detail_blog(id):
 @mod_blog.route('/allblog',methods=['GET'])
 @login_required
 def all_blog():
-	blogs = Blog.query.filter_by().order_by(Blog.id.desc())
+	blogs = Blog.query.all()
 	return render_template('allblog.html',blogs=blogs)
