@@ -74,29 +74,23 @@ def edit_blog(id):
 @mod_blog.route('/detailblog/<int:id>',methods=['GET','POST'])
 @login_required
 def detail_blog(id):
-	import pdb
-	pdb.set_trace()
+
 	blog= Blog.query.filter_by(id=id).first()
 	comments = blog.comments.all()
 	form = CommentForm()
 	if form.validate_on_submit():
-		import pdb
-		pdb.set_trace()
+	
 		if form.parent_id.data =="":
 			comment = Comment(content=form.content.data,blog=blog,commentator=current_user)
 			db.session.add(comment)
 			db.session.commit()
-			newcommentform=CommentForm()
-			newcommentform.content.data = ""
 			comments=blog.comments.all()
 		else:
-			comment = Comment(content=form.content.data,blog=blog,commentator=current_user,parent=int(form.parent.data))
+			comment = Comment(content=form.content.data,blog=blog,commentator=current_user,parent=int(form.parent_id.data))
 			db.session.add(comment)
 			db.session.commit()
-			newcommentform=CommentForm()
-			newcommentform.content.data = ""
 			comments=blog.comments.all()	
-		return render_template('detailblog.html',blog=blog,comments=comments,form=newcommentform)
+		return redirect(url_for('.detail_blog',id=blog.id))
 	return render_template('detailblog.html',blog=blog,comments=comments,form=form)		
 
 @mod_blog.route('/allblog',methods=['GET'])

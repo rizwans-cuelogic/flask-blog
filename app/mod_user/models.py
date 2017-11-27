@@ -59,4 +59,4 @@ class Comment(db.Model):
 	user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
 	blog_id = db.Column(db.Integer,db.ForeignKey('blog.id'))
 	parent = db.Column(db.Integer,db.ForeignKey('comment.id'),nullable=True)
-	cm_replies = db.relationship('Comment',remote_side=[id],backref='replies',cascade="all,delete")
+	cm_replies = db.relationship('Comment',remote_side=[id],backref='replies',cascade="all,delete",lazy="joined")

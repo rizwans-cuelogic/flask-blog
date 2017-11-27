@@ -33,14 +33,14 @@
 	main h3{
     	font-size: 21px;
 	}
-	.mr-l{
-		margin-left:50px;
-	}
 	.reply1 {
 		display:none;
 	}
 	.reply2 {
 		display:none;
+	}
+	.mr-l:nth-child(1n+2) {
+    	margin-left: 50px;
 	}
 	</style>
 	<script type="text/javascript">
@@ -73,12 +73,12 @@
 			</div>
 				{{ form.submit }}			
 		</form>
-		{% for comment in comments %}
+		<!-- {% for comment in comments %}
 			<blockquote class="blockquote">
 					<p class="mb-0">{{ comment.content }}</p>
 					<cite class="blockquote-footer"> by {{comment.commentator.username }}</cite>
-					<button class="btn btn-primary" onclick="toggler('reply2');">reply</button>
-					<div class = "reply2">
+					<button class="btn btn-primary" onclick="toggler('{{ comment.id }}');">reply</button>
+					<div class = "{{ comment.id }}" style="display:none;">
 						<form action="" method="post" name=commentform>
 						{{form.csrf_token()}}
 						<div class="form-group">
@@ -91,28 +91,65 @@
 						{{ form.submit }}			
 					</form>	
 					</div>
-			</blockquote>		
-					{% for replay in comment.replies %}
-							<blockquote class="blockquote mr-l">
-								<p class="mb-0">{{ replay.content }}</p>
-								<cite class="blockquote-footer"> by {{ replay.commentator.username }}</cite>
-								<button class="btn btn-primary" onclick="toggler('.reply2');">reply</button>
-								<div class = "reply2">
-									<form action="" method="post" name=commentform>
-									{{form.csrf_token()}}
-									<div class="form-group">
-									{% for error in form.content.errors %}
-										<span style="color:red ">[{{ error }}]</span><br>
-									{% endfor %}
-									{{ form.content(rows="1",class="form-control") }}
-									{{ form.parent_id(value = replay.id) }}
-									</div>
-									{{ form.submit }}			
-								</form>	
-							</div>
-							</blockquote>
-					{% endfor %}
-		{% endfor %}				
+			</blockquote>
+			{{ comment.replies }}
+		{% endfor %} -->
+
+		{% for comment in comments %}
+			{% if  not comment.cm_replies %}
+			<blockquote>
+				{{ comment.content }}
+				by {{ comment.commentator.username }}
+				{{ comment.created }}
+				<button class="btn btn-primary" onclick="toggler('{{ comment.id }}');">reply</button>
+					<div class = "{{ comment.id }}" style="display:none;">
+						<form action="" method="post" name=commentform>
+						{{form.csrf_token()}}
+						<div class="form-group">
+						{% for error in form.content.errors %}
+							<span style="color:red ">[{{ error }}]</span><br>
+						{% endfor %}
+						{{ form.content(rows="1",class="form-control") }}
+						{{ form.parent_id(value = comment.id) }}
+						</div>
+						{{ form.submit }}			
+						</form>	
+					</div>			
+			</blockquote>
+			{% endif %}
+			{% for reply in comment.replies recursive %}
+				<blockquote class="blockqoute mr-l">
+				{{ reply.content }}
+				by{{ reply.commentator.username}}
+				{{ reply.created }}
+				{{ loop(reply.replies) }}
+				<button class="btn btn-primary" onclick="toggler('{{ reply.id }}');">reply</button>
+				</blockquote>
+					<div class = "{{ reply.id }}" style="display:none;">
+						<form action="" method="post" name=commentform>
+						{{form.csrf_token()}}
+						<div class="form-group">
+						{% for error in form.content.errors %}
+							<span style="color:red ">[{{ error }}]</span><br>
+						{% endfor %}
+						{{ form.content(rows="1",class="form-control") }}
+						{{ form.parent_id(value = comment.id) }}
+						</div>
+						{{ form.submit }}			
+					</form>	
+					</div>
+			{% endfor %}
+		{% endfor %}
+
+	<!-- 	{% for comment in comments recursive %}
+				<li>{{ comment.content }}</li>
+				{% if comment.replies %}
+					<ul class="children">{{ loop(comment.replies) }}</ul>
+				{% endif %}
+		{% endfor %}
+ -->
+				
 	</div>	
+			}
 
 {% endblock %}
